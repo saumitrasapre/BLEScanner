@@ -27,12 +27,6 @@
                 android:textColor="@android:color/black"
                 android:id="@+id/tv_rssi"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"
-                android:id="@+id/tv_distance"/>
 
         </LinearLayout>
 

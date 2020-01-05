@@ -8,12 +8,10 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
-import com.nexenio.bleindoorpositioning.ble.beacon.Beacon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Utils.toast(getApplicationContext(), "Scan Button Pressed");
-                if(myScanner.scanState()==false)
+                if(myScanner.isScanning()==false)
                 {
                     startScan();
                 }
@@ -103,13 +101,14 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(BTonoffreceiver);
     }
 
-    public void addDevice(BluetoothDevice device, Beacon beacon, int new_rssi) {
+    public void addDevice(BluetoothDevice device, int new_rssi) {
 
         String address=device.getAddress();
         if(!deviceHashMap.containsKey(address))
         {
-            BTLE_Device newDevice=new BTLE_Device(device,beacon);
+            BTLE_Device newDevice=new BTLE_Device(device);
             newDevice.setRSSI(new_rssi);
+            System.out.println(newDevice.getAddress());
 
             deviceHashMap.put(address,newDevice);
             deviceList.add(newDevice);
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         deviceList.clear();
         deviceHashMap.clear();
         adapter.notifyDataSetChanged();
-        myScanner.startScanning();
+        myScanner.start();
     }
 
     public void stopScan() {

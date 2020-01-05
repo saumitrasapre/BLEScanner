@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.nexenio.bleindoorpositioning.ble.beacon.Beacon;
 
 import java.util.ArrayList;
 
@@ -40,21 +39,18 @@ public class BTLE_ListAdapter extends ArrayAdapter<BTLE_Device> {
         String name=device.getName();
         String address=device.getAddress();
         int rssi=device.getRSSI();
-        int distance=device.getDistance();
 
 
         TextView tv_name=convertView.findViewById(R.id.tv_name);
-        TextView tv_distance=convertView.findViewById(R.id.tv_distance);
-
         System.out.println("Device name: " +device.getName());
-        System.out.println("Device distance: " +distance);
 
-        if (name != null) {
-
-           // System.out.println("Device name: " +device.getName());
+        if (name != null && name.length()>0) {
             tv_name.setText(device.getName());
         }
-        tv_distance.setText(distance);
+        else
+        {
+            tv_name.setText("No name");
+        }
         TextView tv_rssi=convertView.findViewById(R.id.tv_rssi);
         tv_rssi.setText("RSSI: "+Integer.toString(rssi));
 
