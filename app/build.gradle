@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.blescanner"
-        minSdkVersion 25
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -28,5 +28,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     implementation 'com.nexenio.bleindoorpositioning:core:0.4.0'
+    implementation 'org.altbeacon:android-beacon-library:2+'
 
 }

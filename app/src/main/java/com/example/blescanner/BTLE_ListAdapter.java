@@ -42,7 +42,7 @@ public class BTLE_ListAdapter extends ArrayAdapter<BTLE_Device> {
 
 
         TextView tv_name=convertView.findViewById(R.id.tv_name);
-        System.out.println("Device name: " +device.getName());
+        //System.out.println("Device name: " +device.getName());
 
         if (name != null && name.length()>0) {
             tv_name.setText(device.getName());
