@@ -15,22 +15,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.nexenio.bleindoorpositioning.IndoorPositioning;
-import com.nexenio.bleindoorpositioning.ble.advertising.AdvertisingPacket;
-import com.nexenio.bleindoorpositioning.ble.advertising.IndoorPositioningAdvertisingPacket;
-import com.nexenio.bleindoorpositioning.ble.beacon.Beacon;
-import com.nexenio.bleindoorpositioning.ble.beacon.BeaconManager;
-import com.nexenio.bleindoorpositioning.ble.beacon.IBeacon;
-import com.nexenio.bleindoorpositioning.location.Location;
-import com.nexenio.bleindoorpositioning.location.provider.IBeaconLocationProvider;
 
-import org.altbeacon.beacon.distance.AndroidModel;
-import org.altbeacon.beacon.distance.DistanceCalculator;
-import org.altbeacon.beacon.distance.ModelSpecificDistanceCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import static java.lang.Math.pow;
 
@@ -130,9 +118,6 @@ public class BTLE_Scan {
                 @Override
                 public void run() {
 
-                    processScanResult(result);
-                    System.out.println(result.getDevice().getAddress());
-
                     if(result.getDevice().getName()!=null) {
                         if (result.getDevice().getName().equals("Beacon1")) {
                             BTLE_Scan.rssi1 = new_rssi;
@@ -145,7 +130,8 @@ public class BTLE_Scan {
                         }
                     }
 
-
+                    processScanResult(result);
+                    System.out.println(result.getDevice().getAddress());
                     main.addDevice(result.getDevice(), new_rssi);
 
 
@@ -173,10 +159,6 @@ public class BTLE_Scan {
         ScanRecord record=scanResult.getScanRecord();
         int txPowerlevel=record.getTxPowerLevel();
 
-
-        AndroidModel model=AndroidModel.forThisDevice();
-
-        //ModelSpecificDistanceCalculator myobj=new ModelSpecificDistanceCalculator(main.getApplicationContext(),null,model);
         double n = 2.25;
         //double distance;
 
@@ -211,7 +193,6 @@ public class BTLE_Scan {
         //String devName=scanResult.getDevice().getName();
       // if(scanResult.getDevice().getName().equals("Beacon1") ||scanResult.getDevice().getName().equals("Beacon2") ||scanResult.getDevice().getName().equals("Beacon3") ) {
 
-            System.out.println("Henlo");
             if(scanResult.getDevice().getName()!=null) {
                 if (scanResult.getDevice().getName().equals("Beacon1") ) {
                     if (rssi1 <= -60) {
