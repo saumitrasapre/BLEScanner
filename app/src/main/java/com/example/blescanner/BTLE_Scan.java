@@ -5,8 +5,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -26,6 +28,7 @@ import org.altbeacon.beacon.distance.AndroidModel;
 import org.altbeacon.beacon.distance.DistanceCalculator;
 import org.altbeacon.beacon.distance.ModelSpecificDistanceCalculator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.pow;
@@ -40,6 +43,7 @@ public class BTLE_Scan {
     private Handler myhandler;
     private int signalStrength;
     private long scanPeriod;
+    ArrayList<Integer>distArray=new ArrayList<Integer>(3);
 
     public BTLE_Scan(MainActivity main, long scanPeriod, int signalStrength) {
         this.main = main;
@@ -53,6 +57,12 @@ public class BTLE_Scan {
         myscanner = myAdapter.getBluetoothLeScanner();
 
     }
+
+    ScanSettings settings = new ScanSettings.Builder()
+            .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+            .setReportDelay(0)
+            .build();
+    List<ScanFilter> filters = new ArrayList<>();
 
     public boolean isScanning() {
         return scanState;
@@ -89,7 +99,8 @@ public class BTLE_Scan {
             }, scanPeriod);
 
             scanState = true;
-            myscanner.startScan(myLEScanCallback);
+            //myscanner.startScan(myLEScanCallback);
+           myscanner.startScan(filters,settings,myLEScanCallback);
 
         }
     }
@@ -133,34 +144,87 @@ public class BTLE_Scan {
         int rssi=scanResult.getRssi();
         AndroidModel model=AndroidModel.forThisDevice();
         //ModelSpecificDistanceCalculator myobj=new ModelSpecificDistanceCalculator(main.getApplicationContext(),null,model);
-     double n = 2.25;
-     double distance;
+        double n = 2.25;
+        //double distance;
 
-     distance=  Math.pow(10.0, ((double)txPowerlevel - rssi) / (10 * 2));
-//        double distance=0;
-//        if (rssi == 0 || txPowerlevel == 0) {
-//            distance = -1;
-//        }
-//        double ratio2 = txPowerlevel - rssi;
-//        double ratio2_linear = Math.pow(10, ratio2 / 10);
-//        double y = 0;
-//         double r = Math.sqrt(ratio2_linear);
-//
-//        double ratio = rssi * 1.0 / txPowerlevel;
-//        if (ratio < 1.0)
-//        {
-//            y = Math.pow(ratio, 10);
-//        }
-//        else
-//        {
-//            y = (0.89976) * Math.pow(ratio, 7.7095) + 0.111;
-//            distance= y*10;
-//       }
+        //distance=  Math.pow(10.0, ((double)txPowerlevel - rssi) / (10 * 2));
+        double distance=0;
+        if (rssi == 0 || txPowerlevel == 0) {
+            distance = -1;
+        }
+        double ratio2 = txPowerlevel - rssi;
+        double ratio2_linear = Math.pow(10, ratio2 / 10);
+        double y = 0;
+         double r = Math.sqrt(ratio2_linear);
+
+        double ratio = rssi * 1.0 / txPowerlevel;
+       // if (ratio < 1.0)
+      //  {
+      //      y = Math.pow(ratio, 10);
+      //  }
+       // else
+        //{
+            y = (0.89976) * Math.pow(ratio, 7.7095) + 0.111;
+            //distance= y;
+      // }
 
 //        myobj.calculateDistance(txPowerlevel,rssi);
         //if(scanResult.getDevice().getName()=="Adi") {
-            Log.d("Distance ", "ADDRESS  " + scanResult.getDevice().getName() + " distance is  " + String.valueOf(distance));
-       // }
+
+        // }
+        int flag = 0;
+        if(scanResult.getDevice().getName()=="Beacon1" ||scanResult.getDevice().getName()=="Beacon2" ||scanResult.getDevice().getName()=="Beacon3" ) {
+
+            if (scanResult.getDevice().getName() == "Beacon1") {
+                if (rssi <= 60) {
+                    flag = 0;
+                }
+
+                if (rssi > 60) {
+                    flag = 1;
+                }
+
+                if (scanResult.getDevice().getName() == "Beacon1") {
+                    distArray.add(0, flag);
+                }
+
+            }
+
+            if (scanResult.getDevice().getName() == "Beacon2") {
+                if (rssi <= 60) {
+                    flag = 0;
+                }
+
+                if (rssi > 60) {
+                    flag = 1;
+                }
+
+                if (scanResult.getDevice().getName() == "Beacon2") {
+                    distArray.add(1, flag);
+                }
+
+            }
+
+            if (scanResult.getDevice().getName() == "Beacon3") {
+                if (rssi <= 65) {
+                    flag = 0;
+                }
+
+                if (rssi > 65) {
+                    flag = 1;
+                }
+
+                if (scanResult.getDevice().getName() == "Beacon3") {
+                    distArray.add(2, flag);
+                }
+
+            }
+            Log.d("Dis Array : ","[ "+ String.valueOf(distArray.get(0)) +String.valueOf( distArray.get(1)) + String.valueOf(distArray.get(2)) + "]");
+
+        }
+
+
+        //   Log.d("Distance ", "ADDRESS  " + scanResult.getDevice().getName() + " distance is  " + String.valueOf(distance) + "TX Power "+String.valueOf(txPowerlevel));
 
 
 
@@ -168,4 +232,4 @@ public class BTLE_Scan {
 
     }
 
-  }
+}
