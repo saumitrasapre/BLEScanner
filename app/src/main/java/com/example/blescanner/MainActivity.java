@@ -101,13 +101,14 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(BTonoffreceiver);
     }
 
-    public void addDevice(BluetoothDevice device, int new_rssi) {
+    public void addDevice(BluetoothDevice device, int new_rssi, int[] distArray) {
 
         String address=device.getAddress();
         if(!deviceHashMap.containsKey(address))
         {
             BTLE_Device newDevice=new BTLE_Device(device);
             newDevice.setRSSI(new_rssi);
+            newDevice.setDistArray(distArray);
             System.out.println(newDevice.getAddress());
 
 

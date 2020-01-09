@@ -32,7 +32,7 @@ public class BTLE_Scan {
     private Handler myhandler;
     private int signalStrength;
     private long scanPeriod;
-   int distArray[]=new int[10];
+   int [] distArray=new int[10];
    static int rssi1;
    static int rssi2;
    static int rssi3;
@@ -129,10 +129,10 @@ public class BTLE_Scan {
                             BTLE_Scan.rssi3 = new_rssi;
                         }
                     }
-
-                    processScanResult(result);
+                int[]display=new int[3];
+                   display= processScanResult(result);
                     System.out.println(result.getDevice().getAddress());
-                    main.addDevice(result.getDevice(), new_rssi);
+                    main.addDevice(result.getDevice(), new_rssi,display);
 
 
                 }
@@ -152,7 +152,7 @@ public class BTLE_Scan {
         }
     };
 
-    private void processScanResult(@NonNull ScanResult scanResult) {
+    private int[] processScanResult(@NonNull ScanResult scanResult) {
         String macAddress = scanResult.getDevice().getAddress();
         byte[] data = scanResult.getScanRecord().getBytes();
 
@@ -238,6 +238,7 @@ public class BTLE_Scan {
 
                 }
                 Log.d("Dis Array : ", "[ " + String.valueOf(distArray[1]) + String.valueOf(distArray[2]) + String.valueOf(distArray[3]) + "]");
+            return distArray;
             }
 
              // Log.d("Dis Array : ","[ "+ rssi1 +rssi2 + rssi3 + "]");
@@ -249,7 +250,7 @@ public class BTLE_Scan {
 
 
 
-
+        return new int[3];
 
     }
 

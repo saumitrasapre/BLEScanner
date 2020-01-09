@@ -7,6 +7,7 @@ public class BTLE_Device {
 
     private BluetoothDevice bluetoothDevice;
     private int rssi;
+    private  int[]distArray;
 
     public BTLE_Device(BluetoothDevice bluetoothDevice) {
         this.bluetoothDevice = bluetoothDevice;
@@ -26,5 +27,13 @@ public class BTLE_Device {
 
     public int getRSSI() {
         return rssi;
+    }
+
+    public int[] getDistArray() {
+        return distArray;
+    }
+
+    public void setDistArray(int[] distArray) {
+        this.distArray = distArray;
     }
 }

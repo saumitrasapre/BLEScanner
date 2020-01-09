@@ -39,6 +39,7 @@ public class BTLE_ListAdapter extends ArrayAdapter<BTLE_Device> {
         String name=device.getName();
         String address=device.getAddress();
         int rssi=device.getRSSI();
+        int[]distArray=device.getDistArray();
 
 
         TextView tv_name=convertView.findViewById(R.id.tv_name);
@@ -52,6 +53,7 @@ public class BTLE_ListAdapter extends ArrayAdapter<BTLE_Device> {
             tv_name.setText("No name");
         }
         TextView tv_rssi=convertView.findViewById(R.id.tv_rssi);
+        TextView tv_distance=convertView.findViewById(R.id.tv_distance);
         tv_rssi.setText("RSSI: "+Integer.toString(rssi));
 
         TextView tv_macaddr=convertView.findViewById(R.id.tv_macaddr);
@@ -62,6 +64,46 @@ public class BTLE_ListAdapter extends ArrayAdapter<BTLE_Device> {
         else
         {
             tv_macaddr.setText("No Address...");
+        }
+
+        if(device.getName()!=null) {
+            tv_distance.setVisibility(View.VISIBLE);
+            if (device.getName().equals("Beacon1")) {
+
+
+                if(distArray[1]==0)
+                {
+                    tv_distance.setText("Far");
+                }
+                if(distArray[1]==1)
+                {
+                    tv_distance.setText("Near");
+                }
+            }
+            if (device.getName().equals("Beacon2")) {
+                if(distArray[2]==0)
+                {
+                    tv_distance.setText("Far");
+                }
+                if(distArray[2]==1)
+                {
+                    tv_distance.setText("Near");
+                }
+            }
+            if (device.getName().equals("Beacon3")) {
+                if(distArray[3]==0)
+                {
+                    tv_distance.setText("Far");
+                }
+                if(distArray[3]==1)
+                {
+                    tv_distance.setText("Near");
+                }
+            }
+        }
+        else
+        {
+            tv_distance.setVisibility(View.INVISIBLE);
         }
 
 
