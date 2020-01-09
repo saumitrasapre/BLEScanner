@@ -110,17 +110,7 @@ public class MainActivity extends AppCompatActivity {
             newDevice.setRSSI(new_rssi);
             System.out.println(newDevice.getAddress());
 
-            if(device.getName()!=null) {
-                if (device.getName().equals("Beacon1")) {
-                    BTLE_Scan.rssi1 = new_rssi;
-                }
-                if (device.getName().equals("Beacon2")) {
-                    BTLE_Scan.rssi2 = new_rssi;
-                }
-                if (device.getName().equals("Beacon3")) {
-                    BTLE_Scan.rssi3 = new_rssi;
-                }
-            }
+
 
             deviceHashMap.put(address,newDevice);
             deviceList.add(newDevice);

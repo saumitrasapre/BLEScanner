@@ -133,6 +133,19 @@ public class BTLE_Scan {
                     processScanResult(result);
                     System.out.println(result.getDevice().getAddress());
 
+                    if(result.getDevice().getName()!=null) {
+                        if (result.getDevice().getName().equals("Beacon1")) {
+                            BTLE_Scan.rssi1 = new_rssi;
+                        }
+                        if (result.getDevice().getName().equals("Beacon2")) {
+                            BTLE_Scan.rssi2 = new_rssi;
+                        }
+                        if (result.getDevice().getName().equals("Beacon3")) {
+                            BTLE_Scan.rssi3 = new_rssi;
+                        }
+                    }
+
+
                     main.addDevice(result.getDevice(), new_rssi);
 
 
@@ -238,7 +251,6 @@ public class BTLE_Scan {
                     if (rssi3 > -65) {
                         flag3 = 1;
                     }
-
                     if (scanResult.getDevice().getName().equals("Beacon3")) {
                         distArray[3] = flag3;
                     }
@@ -247,7 +259,7 @@ public class BTLE_Scan {
                 Log.d("Dis Array : ", "[ " + String.valueOf(distArray[1]) + String.valueOf(distArray[2]) + String.valueOf(distArray[3]) + "]");
             }
 
-            //  Log.d("Dis Array : ","[ "+ rssi1 +rssi2 + rssi3 + "]");
+             // Log.d("Dis Array : ","[ "+ rssi1 +rssi2 + rssi3 + "]");
 
         //}
 
