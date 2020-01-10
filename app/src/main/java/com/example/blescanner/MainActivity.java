@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
@@ -21,7 +22,6 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String TAG = MainActivity.class.getSimpleName();
 
     public static final int REQUEST_ENABLE_BT = 1;
 
@@ -29,11 +29,12 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<BTLE_Device> deviceList;
     private static BTLE_ListAdapter adapter;
     public static String plan_link;
+    Handler handler;
 
 
     public static  BTLE_Scan myScanner;
     private static   NotifService notif;
-    boolean notifFlag=false;
+    boolean notifFlag[]=new boolean[10];
 
     private static Button btn_Scan,btn_qr;
 
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         deviceHashMap = new HashMap<>();
         deviceList = new ArrayList<>();
         notif=new NotifService(this);
+        handler=new Handler();
 
         adapter = new BTLE_ListAdapter(this, R.layout.device_list_item, deviceList);
         myScanner=new BTLE_Scan(this,Integer.MAX_VALUE,-120);
@@ -120,58 +122,115 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(BTonoffreceiver);
     }
 
-    public void addDevice(BluetoothDevice device, int new_rssi, int[] distArray) {
+    public void addDevice(BluetoothDevice device, int new_rssi, final int[] distArray) {
 
         String address = device.getAddress();
-        try {
+
             if (!deviceHashMap.containsKey(address)) {
                 BTLE_Device newDevice = new BTLE_Device(device);
+
 
                 newDevice.setRSSI(new_rssi);
                 newDevice.setDistArray(distArray);
                 System.out.println(newDevice.getAddress());
 
+                    if(distArray[1] == 1 || distArray[2]==1)
+                    {
+                        //notif.triggerNotification();
 
-                if (distArray[1] == 1 && notifFlag == false) {
-                    notifFlag = true;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim);
+                                if(distArray[1]==1 && notifFlag[1]==false)
+                                {
+                                    notif.triggerNotification(0001,"1");
+                                    PositioningActivity.b2.startAnimation(animation);
+                                    notifFlag[1] = true;
+                                }
+                                if(distArray[2]==1 && notifFlag[2]==false)
+                                {
+                                    notif.triggerNotification(0002,"2");
+                                    PositioningActivity.b4.startAnimation(animation);
+                                    notifFlag[2] = true;
+                                }
 
-                            notif.triggerNotification();
-                    System.out.println("Animation1");
-                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim);
-                    System.out.println("Animation2");
-                    //PositioningActivity.b2.setVisibility(View.VISIBLE);
-                    PositioningActivity.b2.startAnimation(animation);
-                    System.out.println("Animation3");
+                            }
+                        },200);
 
 
+                    }
 
-                } else if (distArray[1] == 0) {
-                    notifFlag = false;
-                            notif.cancelNotification();
-                           PositioningActivity.b2.clearAnimation();
-                    //PositioningActivity.b2.setVisibility(View.INVISIBLE);
+                    if (distArray[1] == 0 || distArray[2]==0) {
 
-                }
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(distArray[1]==0 && notifFlag[1]==true)
+                                {
+                                    notif.cancelNotification(0001);
+                                    PositioningActivity.b2.clearAnimation();
+                                    notifFlag[1] = false;
+                                }
+                                if(distArray[2]==0 && notifFlag[2]==true)
+                                {
+                                    notif.cancelNotification(0002);
+                                    PositioningActivity.b4.clearAnimation();
+                                    notifFlag[2] = false;
+                                }
 
+                            }
+                        },200);
+                        //notif.cancelNotification();
+
+
+                    }
                 deviceHashMap.put(address, newDevice);
                 deviceList.add(newDevice);
             } else {
-                if (distArray[1] == 1 && notifFlag == false) {
-                    notifFlag = true;
-                            notif.triggerNotification();
-                } else if (distArray[1] == 0) {
-                    notifFlag = false;
-                           notif.cancelNotification();
+                    if (distArray[1] == 1 || distArray[2] == 1) {
+                        //notif.triggerNotification();
 
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim);
+                                if (distArray[1] == 1 && notifFlag[1]==false) {
+                                    notif.triggerNotification(0001,"1");
+                                    PositioningActivity.b2.startAnimation(animation);
+                                    notifFlag[1] = true;
+
+                                }
+                                if (distArray[2] == 1 && notifFlag[2]==false) {
+                                    notif.triggerNotification(0002,"2");
+                                    PositioningActivity.b4.startAnimation(animation);
+                                    notifFlag[2] = true;
+                                }
+                            }
+                        }, 200);
+
+                    }
+                    if (distArray[1] == 0 || distArray[2] == 0) {
+
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (distArray[1] == 0 && notifFlag[1]==true) {
+                                    notif.cancelNotification(0001);
+                                    PositioningActivity.b2.clearAnimation();
+                                    notifFlag[1] = false;
+                                }
+                                if (distArray[2] == 0 && notifFlag[2]==true) {
+                                    notif.cancelNotification(0002);
+                                    PositioningActivity.b4.clearAnimation();
+                                    notifFlag[2] = false;
+                                }
+                            }
+                        }, 200);
 
                 }
-                deviceHashMap.get(address).setRSSI(new_rssi);
             }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+                deviceHashMap.get(address).setRSSI(new_rssi);
         adapter.notifyDataSetChanged();
     }
 

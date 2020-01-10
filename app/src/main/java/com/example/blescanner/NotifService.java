@@ -22,7 +22,7 @@ public class NotifService {
         this.main = main;
     }
 
-    private static final int uniqueID=123456;
+    //private static final int uniqueID=123456;
 
     void createNotificationChannel() {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
@@ -36,7 +36,7 @@ public class NotifService {
     }
 
 
-    void triggerNotification() {
+    void triggerNotification(int uniqueID, String text) {
 
         Intent intent=new Intent(main,AfterNotif.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -46,7 +46,7 @@ public class NotifService {
         notification=new NotificationCompat.Builder(main, "Default");
         notification.setSmallIcon(R.drawable.ic_launcher_foreground);
         notification.setContentTitle("BLE Scanner");
-        notification.setContentText("Beacon in Range");
+        notification.setContentText("Beacon "+text+" in Range");
         notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notification.setContentIntent(pendingIntent);
         notification.setChannelId("Default");
@@ -58,9 +58,9 @@ public class NotifService {
         NotificationManagerCompat notificationManagerCompat=NotificationManagerCompat.from(main);
         notificationManagerCompat.notify(uniqueID,notification.build());
     }
-    void cancelNotification()
+    void cancelNotification(int uniqueID)
     {
         NotificationManager notificationManager = (NotificationManager)main.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(123456);
+        notificationManager.cancel(uniqueID);
     }
 }

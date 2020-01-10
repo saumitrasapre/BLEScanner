@@ -26,6 +26,7 @@ import static java.lang.Math.pow;
 public class BTLE_Scan {
 
     MainActivity main;
+    PositioningActivity pos;
     private BluetoothAdapter myAdapter;
     private BluetoothLeScanner myscanner;
     private boolean scanState;
@@ -37,8 +38,32 @@ public class BTLE_Scan {
    static int rssi2;
    static int rssi3;
 
+
     public BTLE_Scan(MainActivity main, long scanPeriod, int signalStrength) {
         this.main = main;
+        this.signalStrength = signalStrength;
+        this.scanPeriod = scanPeriod;
+        myhandler = new Handler();
+
+        distArray[0]=0;
+        distArray[1]=0;
+        distArray[2]=0;
+        distArray[3]=0;
+
+        rssi1=-10;
+        rssi2=-10;
+        rssi3=-10;
+
+
+        final BluetoothManager bluetoothManager = (BluetoothManager) main.getSystemService(Context.BLUETOOTH_SERVICE);
+
+        myAdapter = bluetoothManager.getAdapter();
+        myscanner = myAdapter.getBluetoothLeScanner();
+
+    }
+
+    public BTLE_Scan(PositioningActivity pos, long scanPeriod, int signalStrength) {
+        this.pos = pos;
         this.signalStrength = signalStrength;
         this.scanPeriod = scanPeriod;
         myhandler = new Handler();
@@ -135,6 +160,7 @@ public class BTLE_Scan {
                     if (result.getDevice().getName()!=null)
                     {
                         if( result.getDevice().getName().equals("Beacon1") ||result.getDevice().getName().equals("Beacon2") ||result.getDevice().getName().equals("Beacon3")) {
+                            //pos.addDevice(result.getDevice(),new_rssi,display);
                             main.addDevice(result.getDevice(), new_rssi, display);
                         }
                     }
