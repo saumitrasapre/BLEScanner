@@ -132,7 +132,13 @@ public class BTLE_Scan {
                 int[]display=new int[3];
                    display= processScanResult(result);
                     System.out.println(result.getDevice().getAddress());
-                    main.addDevice(result.getDevice(), new_rssi,display);
+                    if (result.getDevice().getName()!=null)
+                    {
+                        if( result.getDevice().getName().equals("Beacon1") ||result.getDevice().getName().equals("Beacon2") ||result.getDevice().getName().equals("Beacon3")) {
+                            main.addDevice(result.getDevice(), new_rssi, display);
+                        }
+                    }
+
 
 
                 }

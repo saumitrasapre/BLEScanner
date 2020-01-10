@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,8 +28,11 @@ public class MainActivity extends AppCompatActivity {
     private BTLE_ListAdapter adapter;
 
     private  BTLE_Scan myScanner;
+    private  NotifService notif;
+    boolean notifFlag=false;
 
     private Button btn_Scan;
+    Handler handler;
 
     private BroadcastReceiver_BTState BTonoffreceiver;
 
@@ -48,9 +52,13 @@ public class MainActivity extends AppCompatActivity {
         BTonoffreceiver = new BroadcastReceiver_BTState(getApplicationContext());
         deviceHashMap = new HashMap<>();
         deviceList = new ArrayList<>();
+        notif=new NotifService(this);
+
         adapter = new BTLE_ListAdapter(this, R.layout.device_list_item, deviceList);
         myScanner=new BTLE_Scan(this,Integer.MAX_VALUE,-120);
 
+
+        notif.createNotificationChannel();
         ListView listView = new ListView(getApplicationContext());
         listView.setAdapter(adapter);
         //listView.setOnItemClickListener(this);
@@ -103,22 +111,45 @@ public class MainActivity extends AppCompatActivity {
 
     public void addDevice(BluetoothDevice device, int new_rssi, int[] distArray) {
 
-        String address=device.getAddress();
-        if(!deviceHashMap.containsKey(address))
-        {
-            BTLE_Device newDevice=new BTLE_Device(device);
-            newDevice.setRSSI(new_rssi);
-            newDevice.setDistArray(distArray);
-            System.out.println(newDevice.getAddress());
+        String address = device.getAddress();
+        try {
+            if (!deviceHashMap.containsKey(address)) {
+                BTLE_Device newDevice = new BTLE_Device(device);
+                newDevice.setRSSI(new_rssi);
+                newDevice.setDistArray(distArray);
+                System.out.println(newDevice.getAddress());
 
 
+                if (distArray[1] == 1 && notifFlag == false) {
+                    notifFlag = true;
 
-            deviceHashMap.put(address,newDevice);
-            deviceList.add(newDevice);
+                            notif.triggerNotification();
+
+
+                } else if (distArray[1] == 0) {
+                    notifFlag = false;
+                            notif.cancelNotification();
+
+                }
+
+                deviceHashMap.put(address, newDevice);
+                deviceList.add(newDevice);
+            } else {
+                if (distArray[1] == 1 && notifFlag == false) {
+                    notifFlag = true;
+                            notif.triggerNotification();
+                } else if (distArray[1] == 0) {
+                    notifFlag = false;
+                           notif.cancelNotification();
+
+
+                }
+                deviceHashMap.get(address).setRSSI(new_rssi);
+            }
         }
-        else
+        catch (Exception e)
         {
-            deviceHashMap.get(address).setRSSI(new_rssi);
+            e.printStackTrace();
         }
         adapter.notifyDataSetChanged();
     }
