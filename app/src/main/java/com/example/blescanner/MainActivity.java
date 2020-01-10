@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -23,16 +25,17 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_ENABLE_BT = 1;
 
-    private HashMap<String, BTLE_Device> deviceHashMap;
-    private ArrayList<BTLE_Device> deviceList;
-    private BTLE_ListAdapter adapter;
+    private static HashMap<String, BTLE_Device> deviceHashMap;
+    private static ArrayList<BTLE_Device> deviceList;
+    private static BTLE_ListAdapter adapter;
+    public static String plan_link;
 
-    private  BTLE_Scan myScanner;
-    private  NotifService notif;
+
+    public static  BTLE_Scan myScanner;
+    private static   NotifService notif;
     boolean notifFlag=false;
 
-    private Button btn_Scan;
-    Handler handler;
+    private static Button btn_Scan,btn_qr;
 
     private BroadcastReceiver_BTState BTonoffreceiver;
 
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new BTLE_ListAdapter(this, R.layout.device_list_item, deviceList);
         myScanner=new BTLE_Scan(this,Integer.MAX_VALUE,-120);
+        btn_qr=(Button)findViewById(R.id.btn_qrScan);
+
 
 
         notif.createNotificationChannel();
@@ -82,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_qr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ScanCodeActivity.class));
+            }
+        });
 
 
 
@@ -115,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (!deviceHashMap.containsKey(address)) {
                 BTLE_Device newDevice = new BTLE_Device(device);
+
                 newDevice.setRSSI(new_rssi);
                 newDevice.setDistArray(distArray);
                 System.out.println(newDevice.getAddress());
@@ -124,11 +136,20 @@ public class MainActivity extends AppCompatActivity {
                     notifFlag = true;
 
                             notif.triggerNotification();
+                    System.out.println("Animation1");
+                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim);
+                    System.out.println("Animation2");
+                    //PositioningActivity.b2.setVisibility(View.VISIBLE);
+                    PositioningActivity.b2.startAnimation(animation);
+                    System.out.println("Animation3");
+
 
 
                 } else if (distArray[1] == 0) {
                     notifFlag = false;
                             notif.cancelNotification();
+                           PositioningActivity.b2.clearAnimation();
+                    //PositioningActivity.b2.setVisibility(View.INVISIBLE);
 
                 }
 
@@ -166,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         stopScan();
     }
 
-    public void startScan()
+    public static void startScan()
     {
 
         btn_Scan.setText("Scanning...");
@@ -176,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         myScanner.start();
     }
 
-    public void stopScan() {
+    public static void stopScan() {
 
         btn_Scan.setText("Scan Again...");
         myScanner.stop();

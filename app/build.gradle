@@ -27,8 +27,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
-    implementation 'com.nexenio.bleindoorpositioning:core:0.4.0'
-    implementation 'org.altbeacon:android-beacon-library:2+'
-    implementation 'com.lemmingapex.trilateration:trilateration:1.0.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
 
 }

@@ -13,6 +13,14 @@
         android:id="@+id/scrollView">
     </ScrollView>
 
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Scan QR"
+        android:id="@+id/btn_qrScan"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
