@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 newDevice.setDistArray(distArray);
                 System.out.println(newDevice.getAddress());
 
-                    if(distArray[1] == 1 || distArray[2]==1)
+                    if(distArray[1] == 1 || distArray[2]==1 || distArray[3]==1|| distArray[4]==1|| distArray[5]==1|| distArray[6]==1)
                     {
                         //notif.triggerNotification();
 
@@ -145,15 +145,40 @@ public class MainActivity extends AppCompatActivity {
                                 if(distArray[1]==1 && notifFlag[1]==false)
                                 {
                                     notif.triggerNotification(0001,"1");
-                                    PositioningActivity.b2.startAnimation(animation);
+                                    PositioningActivity.b1.startAnimation(animation);
                                     notifFlag[1] = true;
                                 }
                                 if(distArray[2]==1 && notifFlag[2]==false)
                                 {
                                     notif.triggerNotification(0002,"2");
-                                    PositioningActivity.b4.startAnimation(animation);
+                                    PositioningActivity.b2.startAnimation(animation);
                                     notifFlag[2] = true;
                                 }
+                                if(distArray[3]==1 && notifFlag[3]==false)
+                                {
+                                    notif.triggerNotification(0003,"3");
+                                    PositioningActivity.b3.startAnimation(animation);
+                                    notifFlag[3] = true;
+                                }
+                                if(distArray[4]==1 && notifFlag[4]==false)
+                                {
+                                    notif.triggerNotification(0004,"4");
+                                    PositioningActivity.b4.startAnimation(animation);
+                                    notifFlag[4] = true;
+                                }
+                                if(distArray[5]==1 && notifFlag[5]==false)
+                                {
+                                    notif.triggerNotification(0005,"5");
+                                    PositioningActivity.b5.startAnimation(animation);
+                                    notifFlag[5] = true;
+                                }
+                                if(distArray[6]==1 && notifFlag[6]==false)
+                                {
+                                    notif.triggerNotification(0006,"6");
+                                    PositioningActivity.b6.startAnimation(animation);
+                                    notifFlag[6] = true;
+                                }
+
 
                             }
                         },200);
@@ -161,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
 
-                    if (distArray[1] == 0 || distArray[2]==0) {
+                    if (distArray[1] == 0 || distArray[2]==0|| distArray[3] == 0 || distArray[4]==0|| distArray[5]==0|| distArray[6]==0) {
 
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -169,14 +194,38 @@ public class MainActivity extends AppCompatActivity {
                                 if(distArray[1]==0 && notifFlag[1]==true)
                                 {
                                     notif.cancelNotification(0001);
-                                    PositioningActivity.b2.clearAnimation();
+                                    PositioningActivity.b1.clearAnimation();
                                     notifFlag[1] = false;
                                 }
                                 if(distArray[2]==0 && notifFlag[2]==true)
                                 {
                                     notif.cancelNotification(0002);
-                                    PositioningActivity.b4.clearAnimation();
+                                    PositioningActivity.b2.clearAnimation();
                                     notifFlag[2] = false;
+                                }
+                                if(distArray[3]==0 && notifFlag[3]==true)
+                                {
+                                    notif.cancelNotification(0003);
+                                    PositioningActivity.b3.clearAnimation();
+                                    notifFlag[3] = false;
+                                }
+                                if(distArray[4]==0 && notifFlag[4]==true)
+                                {
+                                    notif.cancelNotification(0004);
+                                    PositioningActivity.b4.clearAnimation();
+                                    notifFlag[4] = false;
+                                }
+                                if(distArray[5]==0 && notifFlag[5]==true)
+                                {
+                                    notif.cancelNotification(0005);
+                                    PositioningActivity.b5.clearAnimation();
+                                    notifFlag[5] = false;
+                                }
+                                if(distArray[6]==0 && notifFlag[6]==true)
+                                {
+                                    notif.cancelNotification(0006);
+                                    PositioningActivity.b6.clearAnimation();
+                                    notifFlag[6] = false;
                                 }
 
                             }
@@ -188,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 deviceHashMap.put(address, newDevice);
                 deviceList.add(newDevice);
             } else {
-                    if (distArray[1] == 1 || distArray[2] == 1) {
+                    if (distArray[1] == 1 || distArray[2] == 1 ||distArray[3] == 1 || distArray[4] == 1 || distArray[5] == 1|| distArray[6] == 1) {
                         //notif.triggerNotification();
 
                         handler.postDelayed(new Runnable() {
@@ -197,33 +246,74 @@ public class MainActivity extends AppCompatActivity {
                                 Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim);
                                 if (distArray[1] == 1 && notifFlag[1]==false) {
                                     notif.triggerNotification(0001,"1");
-                                    PositioningActivity.b2.startAnimation(animation);
+                                    PositioningActivity.b1.startAnimation(animation);
                                     notifFlag[1] = true;
 
                                 }
                                 if (distArray[2] == 1 && notifFlag[2]==false) {
                                     notif.triggerNotification(0002,"2");
-                                    PositioningActivity.b4.startAnimation(animation);
+                                    PositioningActivity.b2.startAnimation(animation);
                                     notifFlag[2] = true;
+                                }
+                                if (distArray[3] == 1 && notifFlag[3]==false) {
+                                    notif.triggerNotification(0003,"3");
+                                    PositioningActivity.b3.startAnimation(animation);
+                                    notifFlag[3] = true;
+
+                                }
+                                if (distArray[4] == 1 && notifFlag[4]==false) {
+                                    notif.triggerNotification(0004,"4");
+                                    PositioningActivity.b4.startAnimation(animation);
+                                    notifFlag[4] = true;
+                                }
+                                if (distArray[5] == 1 && notifFlag[5]==false) {
+                                    notif.triggerNotification(0005,"5");
+                                    PositioningActivity.b5.startAnimation(animation);
+                                    notifFlag[5] = true;
+                                }
+                                if (distArray[6] == 1 && notifFlag[6]==false) {
+                                    notif.triggerNotification(0006,"6");
+                                    PositioningActivity.b6.startAnimation(animation);
+                                    notifFlag[6] = true;
                                 }
                             }
                         }, 200);
 
                     }
-                    if (distArray[1] == 0 || distArray[2] == 0) {
+                    if (distArray[1] == 0 || distArray[2] == 0||distArray[3] == 0 || distArray[4] == 0|| distArray[5] == 0|| distArray[6] == 0) {
 
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 if (distArray[1] == 0 && notifFlag[1]==true) {
                                     notif.cancelNotification(0001);
-                                    PositioningActivity.b2.clearAnimation();
+                                    PositioningActivity.b1.clearAnimation();
                                     notifFlag[1] = false;
                                 }
                                 if (distArray[2] == 0 && notifFlag[2]==true) {
                                     notif.cancelNotification(0002);
-                                    PositioningActivity.b4.clearAnimation();
+                                    PositioningActivity.b2.clearAnimation();
                                     notifFlag[2] = false;
+                                }
+                                if (distArray[3] == 0 && notifFlag[3]==true) {
+                                    notif.cancelNotification(0003);
+                                    PositioningActivity.b3.clearAnimation();
+                                    notifFlag[3] = false;
+                                }
+                                if (distArray[4] == 0 && notifFlag[4]==true) {
+                                    notif.cancelNotification(0004);
+                                    PositioningActivity.b4.clearAnimation();
+                                    notifFlag[4] = false;
+                                }
+                                if (distArray[5] == 0 && notifFlag[5]==true) {
+                                    notif.cancelNotification(0005);
+                                    PositioningActivity.b5.clearAnimation();
+                                    notifFlag[5] = false;
+                                }
+                                if (distArray[6] == 0 && notifFlag[6]==true) {
+                                    notif.cancelNotification(0006);
+                                    PositioningActivity.b6.clearAnimation();
+                                    notifFlag[6] = false;
                                 }
                             }
                         }, 200);

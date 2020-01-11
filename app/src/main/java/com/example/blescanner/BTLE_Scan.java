@@ -26,7 +26,6 @@ import static java.lang.Math.pow;
 public class BTLE_Scan {
 
     MainActivity main;
-    PositioningActivity pos;
     private BluetoothAdapter myAdapter;
     private BluetoothLeScanner myscanner;
     private boolean scanState;
@@ -37,6 +36,9 @@ public class BTLE_Scan {
    static int rssi1;
    static int rssi2;
    static int rssi3;
+    static int rssi4;
+    static  int rssi5;
+    static  int rssi6;
 
 
     public BTLE_Scan(MainActivity main, long scanPeriod, int signalStrength) {
@@ -49,10 +51,17 @@ public class BTLE_Scan {
         distArray[1]=0;
         distArray[2]=0;
         distArray[3]=0;
+        distArray[4]=0;
+        distArray[5]=0;
+        distArray[6]=0;
+
 
         rssi1=-10;
         rssi2=-10;
         rssi3=-10;
+        rssi4=-10;
+        rssi5=-10;
+        rssi6=-10;
 
 
         final BluetoothManager bluetoothManager = (BluetoothManager) main.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -62,28 +71,6 @@ public class BTLE_Scan {
 
     }
 
-    public BTLE_Scan(PositioningActivity pos, long scanPeriod, int signalStrength) {
-        this.pos = pos;
-        this.signalStrength = signalStrength;
-        this.scanPeriod = scanPeriod;
-        myhandler = new Handler();
-
-        distArray[0]=0;
-        distArray[1]=0;
-        distArray[2]=0;
-        distArray[3]=0;
-
-        rssi1=-10;
-        rssi2=-10;
-        rssi3=-10;
-
-
-        final BluetoothManager bluetoothManager = (BluetoothManager) main.getSystemService(Context.BLUETOOTH_SERVICE);
-
-        myAdapter = bluetoothManager.getAdapter();
-        myscanner = myAdapter.getBluetoothLeScanner();
-
-    }
 
     ScanSettings settings = new ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
@@ -153,13 +140,22 @@ public class BTLE_Scan {
                         if (result.getDevice().getName().equals("Beacon3")) {
                             BTLE_Scan.rssi3 = new_rssi;
                         }
+                        if (result.getDevice().getName().equals("Beacon4")) {
+                            BTLE_Scan.rssi4 = new_rssi;
+                        }
+                        if (result.getDevice().getName().equals("Beacon5")) {
+                            BTLE_Scan.rssi5 = new_rssi;
+                        }
+                        if (result.getDevice().getName().equals("Beacon6")) {
+                            BTLE_Scan.rssi6 = new_rssi;
+                        }
                     }
-                int[]display=new int[3];
+                int[]display=new int[10];
                    display= processScanResult(result);
                     System.out.println(result.getDevice().getAddress());
                     if (result.getDevice().getName()!=null)
                     {
-                        if( result.getDevice().getName().equals("Beacon1") ||result.getDevice().getName().equals("Beacon2") ||result.getDevice().getName().equals("Beacon3")) {
+                        if( result.getDevice().getName().equals("Beacon1") ||result.getDevice().getName().equals("Beacon2") ||result.getDevice().getName().equals("Beacon3")||result.getDevice().getName().equals("Beacon4")||result.getDevice().getName().equals("Beacon5")||result.getDevice().getName().equals("Beacon6")) {
                             //pos.addDevice(result.getDevice(),new_rssi,display);
                             main.addDevice(result.getDevice(), new_rssi, display);
                         }
@@ -222,16 +218,19 @@ public class BTLE_Scan {
         int flag1=0;
         int flag2=0;
         int flag3 =0;
+        int flag4=0;
+        int flag5=0;
+        int flag6=0;
         //String devName=scanResult.getDevice().getName();
       // if(scanResult.getDevice().getName().equals("Beacon1") ||scanResult.getDevice().getName().equals("Beacon2") ||scanResult.getDevice().getName().equals("Beacon3") ) {
 
             if(scanResult.getDevice().getName()!=null) {
-                if (scanResult.getDevice().getName().equals("Beacon1") ) {
-                    if (rssi1 <= -60) {
+                if (scanResult.getDevice().getName().equals("Beacon1") ) {//White Moto G4 Plus
+                    if (rssi1 <= -69) {
                         flag1 = 0;//far
                     }
 
-                    if (rssi1 > -60) {
+                    if (rssi1 > -69) {
                         flag1 = 1;
                     }
 
@@ -241,12 +240,12 @@ public class BTLE_Scan {
 
                 }
 
-                if (scanResult.getDevice().getName().equals("Beacon2")) {
-                    if (rssi2 <= -60) {
+                if (scanResult.getDevice().getName().equals("Beacon2")) {//Black Moto G4 Plus
+                    if (rssi2 <= -61) {
                         flag2 = 0;
                     }
 
-                    if (rssi2 > -60) {
+                    if (rssi2 > -61) {
                         flag2 = 1;
                     }
 
@@ -256,7 +255,7 @@ public class BTLE_Scan {
 
                 }
 
-                if (scanResult.getDevice().getName().equals("Beacon3")) {
+                if (scanResult.getDevice().getName().equals("Beacon3")) {//Athang's Phone
                     if (rssi3 <= -65) {
                         flag3 = 0;
                     }
@@ -269,7 +268,47 @@ public class BTLE_Scan {
                     }
 
                 }
-                Log.d("Dis Array : ", "[ " + String.valueOf(distArray[1]) + String.valueOf(distArray[2]) + String.valueOf(distArray[3]) + "]");
+
+                if (scanResult.getDevice().getName().equals("Beacon4")) {//Moto G5 Plus #2
+                    if (rssi4 <= -65) {
+                        flag4 = 0;
+                    }
+
+                    if (rssi4 > -65) {
+                        flag4 = 1;
+                    }
+                    if (scanResult.getDevice().getName().equals("Beacon4")) {
+                        distArray[4] = flag4;
+                    }
+
+                }
+                if (scanResult.getDevice().getName().equals("Beacon5")) {//Shubham's Phone
+                    if (rssi5 <= -67) {
+                        flag5 = 0;
+                    }
+
+                    if (rssi5 > -67) {
+                        flag5 = 1;
+                    }
+                    if (scanResult.getDevice().getName().equals("Beacon5")) {
+                        distArray[5] = flag5;
+                    }
+
+                }
+                if (scanResult.getDevice().getName().equals("Beacon6")) {//Ganesh's Phone
+                    if (rssi6 <= -67) {
+                        flag6 = 0;
+                    }
+
+                    if (rssi6 > -67) {
+                        flag6 = 1;
+                    }
+                    if (scanResult.getDevice().getName().equals("Beacon6")) {
+                        distArray[6] = flag6;
+                    }
+
+                }
+                Log.d("Dis Array : ", "[ " + String.valueOf(distArray[1]) + String.valueOf(distArray[2]) + String.valueOf(distArray[3]) + String.valueOf(distArray[4]) + String.valueOf(distArray[5])+ String.valueOf(distArray[6]) + "]");
             return distArray;
             }
 

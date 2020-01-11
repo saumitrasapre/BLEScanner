@@ -100,6 +100,36 @@ public class BTLE_ListAdapter extends ArrayAdapter<BTLE_Device> {
                     tv_distance.setText("Near");
                 }
             }
+            if (device.getName().equals("Beacon4")) {
+                if(distArray[4]==0)
+                {
+                    tv_distance.setText("Far");
+                }
+                if(distArray[4]==1)
+                {
+                    tv_distance.setText("Near");
+                }
+            }
+            if (device.getName().equals("Beacon5")) {
+                if(distArray[5]==0)
+                {
+                    tv_distance.setText("Far");
+                }
+                if(distArray[5]==1)
+                {
+                    tv_distance.setText("Near");
+                }
+            }
+            if (device.getName().equals("Beacon6")) {
+                if(distArray[6]==0)
+                {
+                    tv_distance.setText("Far");
+                }
+                if(distArray[6]==1)
+                {
+                    tv_distance.setText("Near");
+                }
+            }
         }
         else
         {

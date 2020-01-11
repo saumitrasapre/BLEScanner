@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 
 public class PositioningActivity extends AppCompatActivity {
 
-    public static ImageView b2,b4;
+    public static ImageView b1,b2,b3,b4,b5,b6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +22,12 @@ public class PositioningActivity extends AppCompatActivity {
 
 
         ImageView floorimg = (ImageView) findViewById(R.id.floorimg);
+        b1=(ImageView)findViewById(R.id.b1);
         b2=(ImageView)findViewById(R.id.b2);
+        b3=(ImageView)findViewById(R.id.b3);
         b4=(ImageView)findViewById(R.id.b4);
+        b5=(ImageView)findViewById(R.id.b5);
+        b6=(ImageView)findViewById(R.id.b6);
 
 
 
